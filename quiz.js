@@ -19,7 +19,10 @@
    const zh=data.questions.filter(x=>x.lang==='zh'),en=data.questions.filter(x=>x.lang==='en');
    if(zh.length!==25||en.length!==25)throw Error('Wrong language balance');
    if(data.questions.some(x=>!Array.isArray(x.choices)||x.choices.length!==3||![0,1,2].includes(x.answer)))throw Error('Invalid choices');
-   round={items:shuffle([...shuffle(zh).slice(0,5),...shuffle(en).slice(0,5)]),answers:new Map(),sources:data.sources||{}};
+   const selected=shuffle([...shuffle(zh).slice(0,5),...shuffle(en).slice(0,5)]);
+   // Shuffle each question's options while keeping the correct answer index aligned.
+   const items=selected.map(item=>{const order=shuffle([0,1,2]);return {...item,choices:order.map(j=>item.choices[j]),answer:order.indexOf(item.answer)};});
+   round={items,answers:new Map(),sources:data.sources||{}};
    return round;
   }).catch(e=>{loading=null;throw e;});
   return loading;
@@ -27,7 +30,7 @@
  function draw() {
   if(current!=='Q'||!round)return;
   const answered=round.answers.size,correct=round.items.filter(x=>round.answers.get(x.id)===x.answer).length,points=correct*10;
-  let html='<p class="q-intro">50題題庫，每次隨機抽取10題（中文5題、English 5 questions）。每題10分，選擇後即時顯示結果，不得重答。重新整理頁面可抽取新一局。</p>'+
+  let html='<p class="q-intro">50題題庫，每次隨機抽取10題（中文5題、English 5 questions）。每題10分，選擇後即時顯示結果，不得重答。重新整理頁面可抽取新一局，選項次序亦會改變。</p>'+
   '<div class="q-progress"><span class="q-score">'+points+' / 100</span><span class="q-count">已作答 '+answered+' / 10</span></div>';
   if(answered===10)html+='<div class="q-final"><strong>本局成績：'+points+' / 100</strong><span>10題已完成。重新整理頁面可以開始新一局。</span></div>';
   html+=round.items.map((q,i)=>{
