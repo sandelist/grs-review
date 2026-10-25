@@ -32,7 +32,8 @@ document.getElementById("form").addEventListener("submit",async e=>{
   if(different){status.textContent="優惠代碼不正確，請重試。";input.select();return;}
   const original=new TextDecoder().decode(chacha(encKey,nonce,cipher));
   if(!original.startsWith("<!doctype html>"))throw Error("無法解鎖網頁內容");
-  document.open();document.write(original);document.close();
+  const page=original.replace("</body>",'<script src="quiz.js"></'+'script></body>');
+  document.open();document.write(page);document.close();
  }catch(err){status.textContent=err.message||"無法開啟網站，請重試";}finally{btn.disabled=false;btn.textContent="進入網站";}
 });
 </script></body></html>
