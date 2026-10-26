@@ -71,7 +71,8 @@
    const b=document.createElement('button');b.type='button';b.className='tab';b.dataset.tab='Q';b.textContent='知識測驗';
    b.title='每局10題 · 100分滿分';
    b.addEventListener('click',()=>{
-    if(current==='E')eQuestions=null;
+    if(current==='E' && typeof eQuestions!=='undefined')eQuestions=null;
+    if(current==='F' && typeof fQuestions!=='undefined')fQuestions=null;
     current='Q';history.replaceState(null,'','#quiz');render();window.scrollTo({top:0,behavior:'instant'});
    });
    nav.insertBefore(b, nav.firstChild);
