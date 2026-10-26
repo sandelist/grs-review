@@ -72,7 +72,7 @@
    b.title='每局10題 · 100分滿分';
    b.addEventListener('click',()=>{
     if(current==='E' && typeof eQuestions!=='undefined')eQuestions=null;
-    if(current==='F' && typeof fQuestions!=='undefined')fQuestions=null;
+    if(typeof window.__lockF==='function')window.__lockF();
     current='Q';history.replaceState(null,'','#quiz');render();window.scrollTo({top:0,behavior:'instant'});
    });
    nav.insertBefore(b, nav.firstChild);
@@ -83,7 +83,7 @@
   if(current==='Q'){current='A';prevRender();current='Q';tab();show();}
   else{prevRender();tab();}
  };
- window.addEventListener('hashchange',()=>{if(location.hash.toLowerCase()==='#quiz'){current='Q';render();}});
+ window.addEventListener('hashchange',()=>{if(location.hash.toLowerCase()==='#quiz'){if(typeof window.__lockF==='function')window.__lockF();current='Q';render();}});
  if(location.hash.toLowerCase()==='#quiz')current='Q';
  render();
 })();
