@@ -109,7 +109,7 @@ render=function(){
 window.addEventListener('hashchange',()=>{
   const next=location.hash.toLowerCase();
   if(next==='#f'){if(current!=='F')current='F';render();}
-  else if(current==='F'){fQuestions=null;}
+  else {fQuestions=null;}
 });
 if(location.hash.toLowerCase()==='#f')current='F';
 render();
