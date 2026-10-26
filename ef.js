@@ -42,6 +42,7 @@ async function decryptFile(url,password){
 }
 let eReady=false,eLoading=null,eError='';
 let fQuestions=null;
+window.__lockF=function(){fQuestions=null;};
 function loadE(){
   if(eReady||eLoading)return eLoading||Promise.resolve();
   if(!secret){eError='無法讀取解鎖資料，請重新整理網頁並再次登入。';return Promise.resolve();}
